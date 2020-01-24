@@ -1,0 +1,19 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>stools</groupId>
+  <artifactId>c-cfg</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>C CFG Tools</name>
+  <dependencies>
+  	<dependency>
+  		<groupId>org.json</groupId>
+  		<artifactId>json</artifactId>
+  		<version>20190722</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.paypal.digraph</groupId>
+  		<artifactId>digraph-parser</artifactId>
+  		<version>1.0-dylanedit</version>
+  	</dependency>
+  </dependencies>
+</project>
