@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import com.paypal.digraph.parser.GraphEdge;
 import com.paypal.digraph.parser.GraphNode;
@@ -19,7 +20,6 @@ public class Cfg {
 	public Cfg(FileInputStream dot) throws IOException {
 		this.entryPoints = new ArrayList<EntryBlock>();
 		GraphParser parser = new GraphParser(dot);
-		FileOutputStream outfs = new FileOutputStream("C:\\Users\\lamem\\dumps\\graphdump.txt");
 		Map<String, GraphNode> nodes = parser.getNodes();
 		Map<String, GraphEdge> edges = parser.getEdges();
 		blockMap = new HashMap<String, Block>();
@@ -43,7 +43,7 @@ public class Cfg {
 			return new ExitBlock(id);
 		}
 		String[] statements = label.split("\\|");
-		List<Instruction> instrs = new ArrayList<Instruction>();
+		List<IInstruction> instrs = new ArrayList<IInstruction>();
 		for(String stmt : statements) {
 			stmt = stmt.trim().replace("\\l", "\n").replace("\\", "");
 			if(stmt.length()>0 && !stmt.contains("FREQ") && stmt.charAt(0) != '<') {
@@ -78,5 +78,16 @@ public class Cfg {
 	
 	public Map<String, Block> getBlockMap(){
 		return blockMap;
+	}
+	
+	public void mapSource(FileInputStream originalSource) {
+		Scanner lineScanner = new Scanner(originalSource);
+		List<String> lineList = new ArrayList<String>();
+		while(lineScanner.hasNext()) {
+			lineList.add(lineScanner.nextLine());
+		}
+		lineScanner.close();
+		
+		
 	}
 }

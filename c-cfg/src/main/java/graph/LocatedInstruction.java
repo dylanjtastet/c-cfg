@@ -1,6 +1,6 @@
 package graph;
 
-public class LocatedInstruction extends Instruction{
+public class LocatedInstruction extends Instruction implements ILocatedInstruction{
 	private String filename;
 	private int lineno;
 	

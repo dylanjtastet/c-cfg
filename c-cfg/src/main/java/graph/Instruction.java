@@ -1,6 +1,6 @@
 package graph;
 
-public class Instruction {
+public class Instruction implements IInstruction{
 
 	private String text;
 	public Instruction(String text) {

@@ -3,7 +3,7 @@ package graph;
 import java.util.List;
 
 public class BasicBlock extends Block {
-	private List<Instruction> instructions;
+	private List<IInstruction> instructions;
 	private String id;
 	
 //	public BasicBlock(List<Block> children, List<Instruction> instructions, String id) {
@@ -12,7 +12,7 @@ public class BasicBlock extends Block {
 //		this.setChildren(children);
 //	}
 	
-	public BasicBlock(List<Instruction> instructions, String id) {
+	public BasicBlock(List<IInstruction> instructions, String id) {
 		super(id);
 		this.instructions = instructions;
 	}
