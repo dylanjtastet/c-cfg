@@ -1,4 +1,5 @@
 package graph;
+import tuinfo.*;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -80,14 +81,31 @@ public class Cfg {
 		return blockMap;
 	}
 	
+	//TODO: Test dis
 	public void mapSource(FileInputStream originalSource) {
 		Scanner lineScanner = new Scanner(originalSource);
-		List<String> lineList = new ArrayList<String>();
+		List<IOriginalLine> lineList = new ArrayList<IOriginalLine>();
+		//Load lines (indexes should be lineno+1)
+		int i =1;
 		while(lineScanner.hasNext()) {
-			lineList.add(lineScanner.nextLine());
+			lineList.add(new OriginalLine(lineScanner.nextLine(), i++));
 		}
 		lineScanner.close();
-		
-		
+		//Scan for mapped instructions and link to corresponding lineno
+		for(Block b : blockMap.values()) {
+			if(b instanceof BasicBlock) {
+				List<IInstruction> instructions = ((BasicBlock) b).getInstructions();
+				for(i = 0; i < instructions.size(); i++) {
+					IInstruction instr = instructions.get(i);
+					if(instr instanceof ILocatedInstruction) {
+						ILocatedInstruction locInstr = ((ILocatedInstruction) instr);
+						int lineno = ((ILocatedInstruction) instr).getLineno();
+						if(lineno <= lineList.size()) {
+							instructions.set(i, new MappedInstruction(locInstr, lineList.get(lineno-1)));
+						}
+					}
+				}
+			}
+		}
 	}
 }

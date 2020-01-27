@@ -1,6 +1,7 @@
 package graph;
+import tuinfo.*;
 
 public interface IMappedInstruction extends ILocatedInstruction {
-	public String getOriginalLine();
-	public void setOriginalLine(String line);
+	public IOriginalLine getOriginalLine();
+	public void setOriginalLine(IOriginalLine line);
 }

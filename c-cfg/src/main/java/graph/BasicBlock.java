@@ -16,4 +16,16 @@ public class BasicBlock extends Block {
 		super(id);
 		this.instructions = instructions;
 	}
+	
+	public List<IInstruction> getInstructions(){
+		return this.instructions;
+	}
+	
+	public void setInstructions(List<IInstruction> instructions) {
+		this.instructions = instructions;
+	}
+	
+	public void addInstruction(IInstruction instruction) {
+		this.instructions.add(instruction);
+	}
 }

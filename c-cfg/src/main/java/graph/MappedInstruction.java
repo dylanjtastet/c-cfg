@@ -1,9 +1,10 @@
 package graph;
+import tuinfo.*;
 
 public class MappedInstruction implements IMappedInstruction {
 	private ILocatedInstruction locInstr;
-	private String origLine;
-	public MappedInstruction(ILocatedInstruction instr, String origLine) {
+	private IOriginalLine origLine;
+	public MappedInstruction(ILocatedInstruction instr, IOriginalLine origLine) {
 		this.locInstr = instr;
 		this.origLine = origLine;
 	}
@@ -25,10 +26,10 @@ public class MappedInstruction implements IMappedInstruction {
 	public void setText(String text) {
 		locInstr.setText(text);
 	}
-	public String getOriginalLine() {
+	public IOriginalLine getOriginalLine() {
 		return origLine;
 	}
-	public void setOriginalLine(String line) {
+	public void setOriginalLine(IOriginalLine line) {
 		this.origLine = line;
 	}
 }
