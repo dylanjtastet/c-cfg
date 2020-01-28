@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -39,6 +40,7 @@ public class Cfg {
 		if(label.equals("ENTRY")) {
 			EntryBlock entry = new EntryBlock(id);
 			entryPoints.add(entry);
+			return entry;
 		}
 		if (label.equals("EXIT")){
 			return new ExitBlock(id);
@@ -46,7 +48,7 @@ public class Cfg {
 		String[] statements = label.split("\\|");
 		List<IInstruction> instrs = new ArrayList<IInstruction>();
 		for(String stmt : statements) {
-			stmt = stmt.trim().replace("\\l", "\n").replace("\\", "");
+			stmt = stmt.replace("\\l", "\n").replace("\\", "").replace("{", "").replace("}", "").trim();
 			if(stmt.length()>0 && !stmt.contains("FREQ") && stmt.charAt(0) != '<') {
 				if(stmt.charAt(0) == '[') {
 					int end = stmt.indexOf(']');
@@ -82,8 +84,8 @@ public class Cfg {
 	}
 	
 	//TODO: Test dis
-	public void mapSource(FileInputStream originalSource) {
-		Scanner lineScanner = new Scanner(originalSource);
+	public void mapSource(Path originalSourcePath) throws IOException {
+		Scanner lineScanner = new Scanner(originalSourcePath);
 		List<IOriginalLine> lineList = new ArrayList<IOriginalLine>();
 		//Load lines (indexes should be lineno+1)
 		int i =1;
@@ -100,7 +102,8 @@ public class Cfg {
 					if(instr instanceof ILocatedInstruction) {
 						ILocatedInstruction locInstr = ((ILocatedInstruction) instr);
 						int lineno = ((ILocatedInstruction) instr).getLineno();
-						if(lineno <= lineList.size()) {
+						if(lineno <= lineList.size() && lineno > 0 && 
+								locInstr.getFilename().equalsIgnoreCase(originalSourcePath.getFileName().toString())) {
 							instructions.set(i, new MappedInstruction(locInstr, lineList.get(lineno-1)));
 						}
 					}
