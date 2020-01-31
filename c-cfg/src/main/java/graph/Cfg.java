@@ -1,9 +1,6 @@
 package graph;
-import tuinfo.*;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,6 +12,10 @@ import java.util.Scanner;
 import com.paypal.digraph.parser.GraphEdge;
 import com.paypal.digraph.parser.GraphNode;
 import com.paypal.digraph.parser.GraphParser;
+import com.paypal.digraph.parser.Subgraph;
+
+import tuinfo.IOriginalLine;
+import tuinfo.OriginalLine;
 
 public class Cfg {
 	private List<EntryBlock> entryPoints;
@@ -29,21 +30,21 @@ public class Cfg {
 			GraphNode node = entry.getValue();
 			if(node.getAttributes().containsKey("label")) {
 				blockMap.put(entry.getKey(), 
-						parseBlock(node.getAttribute("label").toString(), entry.getKey()));
+						parseBlock(node.getAttribute("label").toString(), entry.getKey(), node.getSubgraph()));
 			}
 		}
 		linkBlocks(edges.keySet());
 	}
 	
 	//TODO: Remove braces from statement sequences
-	private Block parseBlock(String label, String id) {
+	private Block parseBlock(String label, String id, Subgraph sub) {
 		if(label.equals("ENTRY")) {
-			EntryBlock entry = new EntryBlock(id);
+			EntryBlock entry = new EntryBlock(id,sub);
 			entryPoints.add(entry);
 			return entry;
 		}
 		if (label.equals("EXIT")){
-			return new ExitBlock(id);
+			return new ExitBlock(id,sub);
 		}
 		String[] statements = label.split("\\|");
 		List<IInstruction> instrs = new ArrayList<IInstruction>();
@@ -62,7 +63,7 @@ public class Cfg {
 			}
 		}
 		
-		return new BasicBlock(instrs, id);
+		return new BasicBlock(instrs, id,sub);
 	}
 	
 	//NOT idempotent

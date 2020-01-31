@@ -2,6 +2,8 @@ package graph;
 
 import java.util.List;
 
+import com.paypal.digraph.parser.Subgraph;
+
 public class BasicBlock extends Block {
 	private List<IInstruction> instructions;
 	private String id;
@@ -12,8 +14,8 @@ public class BasicBlock extends Block {
 //		this.setChildren(children);
 //	}
 	
-	public BasicBlock(List<IInstruction> instructions, String id) {
-		super(id);
+	public BasicBlock(List<IInstruction> instructions, String id, Subgraph sub) {
+		super(id, sub);
 		this.instructions = instructions;
 	}
 	
